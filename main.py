@@ -25,7 +25,7 @@ for key in dict['results']:
     latitude = key['geometry']['location']['lat']
     longitude = key['geometry']['location']['lng']
 
-    print key['name']+ "at at location of " + str(latitude) + ", " + str(
+    print key['name']+ " at at location of " + str(latitude) + ", " + str(
         longitude)
 
 # print (dict)
