@@ -10,9 +10,11 @@ import sys
 import time #time.now
 import urllib2 #HTTP requests
 import re #regex
+import math
 
 # Global Constants
 API_KEY = "AIzaSyB-09W17tZ08f4mfSG4LWaqSFvuqK8MgNY"
+DISTANCE_TRAVELLED_IN_10_MINUTES = 833
 
 # gmaps = googlemaps.Client(key=API_KEY)
 # address = 'Constitution Ave NW & 10th St NW, Washington, DC'
@@ -72,7 +74,7 @@ def moveMidpoint(t1, t2, t3):
 
 def generateTravelTimeRequestURL(origin, destination):
 
-    if !is_address(origin): # returns true if address is in coordinates
+    if not is_address(origin): # returns true if address is in coordinates
         origin = address_to_string(origin)
         destination = address_to_string(destination)
 
@@ -113,5 +115,15 @@ def distanceMatrix(person1, person2, person3, initialMidpoint):
         duration_in_traffic_times.append(duration_in_traffic)
 
     return distances, duration_in_traffic_times
+
+def calculate_data_point_x(x1, y1, x2, y2):
+    theta = calculate_degrees(x1, y1, x2, y2)
+    data_point_x_x_coordinate = DISTANCE_TRAVELLED_IN_10_MINUTES*math.cos(theta)
+    data_point_x_y_coordinate = DISTANCE_TRAVELLED_IN_10_MINUTES*math.sin(theta)
+
+    return data_point_x_x_coordinate, data_point_x_y_coordinate
+
+def calculate_degrees(x1, y1, x2, y2):
+    return math.atan((x2 - x1)/(y2 - y1))
 
 main()

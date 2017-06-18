@@ -38,9 +38,11 @@
       // <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB-09W17tZ08f4mfSG4LWaqSFvuqK8MgNY&libraries=places">
         var map;
         var infowindow;
+                  var midpoint = {lat: 45.501689, lng: -73.567256};
+
 
         function initMap() {
-          var midpoint = {lat: 45.501689, lng: -73.567256};
+//          var midpoint = {lat: 45.501689, lng: -73.567256};
 
           map = new google.maps.Map(document.getElementById('map'), {
             center: midpoint ,
@@ -75,6 +77,26 @@
             infowindow.open(map, this);
           });
         }
+
+        function addMarker(location) {
+          marker = new google.maps.Marker({
+          position: location,
+          map: map,
+          icon: "http://1.bp.blogspot.com/_GZzKwf6g1o8/S6xwK6CSghI/AAAAAAAAA98/_iA3r4Ehclk/s1600/marker-green.png"
+
+          });
+        }
+
+        // Testing the addMarker function
+        user1 = new google.maps.LatLng(45.50273699999999, -73.57288749999998);
+        user2 = new google.maps.LatLng(45.5067671, -73.56373980000001);
+        user3 = new google.maps.LatLng(45.5148865, -73.5597267);
+
+        addMarker(midpoint[0],midpoint[1]);
+        addMarker(user1);
+        addMarker(user2);
+        addMarker(user3);
+
 
 
   </script>
