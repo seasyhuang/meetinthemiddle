@@ -6,7 +6,8 @@ import googlemaps
 import urllib, json
 import pprint
 import sys
-# from apiclient.discovery import build # need to download this with sudo pip install --upgrade google-api- python-client
+
+# from apiclient.discovery import build # need to download this with sudo pip install --upgrade google-api-python-client
 
 #Derek
 import time

@@ -1,0 +1,26 @@
+{
+  "name": "meetinthemiddle",
+  "version": "1.0.0",
+  "description": "A basic api to determine optimal distance between a variable of uesrs.",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "express": "^4.14.1",
+    "geolib": "^2.0.22",
+    "serialport": "^4.0.7",
+    "socket.io": "^1.7.2"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/seasyhuang/meetinthemiddle.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/seasyhuang/meetinthemiddle/issues"
+  },
+  "homepage": "https://github.com/seasyhuang/meetinthemiddle#readme"
+}
