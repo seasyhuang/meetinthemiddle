@@ -38,7 +38,12 @@
       // <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB-09W17tZ08f4mfSG4LWaqSFvuqK8MgNY&libraries=places">
         var map;
         var infowindow;
-                  var midpoint = {lat: 45.501689, lng: -73.567256};
+        var midpoint = {lat: 45.501689, lng: -73.567256};
+        var typePlace = "cafe";
+        var user1 = new google.maps.LatLng(45.50273699999999, -73.57288749999998);
+        var user2 = new google.maps.LatLng(45.5067671, -73.56373980000001);
+        var user3 = new google.maps.LatLng(45.5148865, -73.5597267);
+
 
 
         function initMap() {
@@ -54,6 +59,8 @@
           service.nearbySearch({
             location: midpoint,
             radius: 500
+            type: [typePlace]
+
           }, callback);
         }
 
@@ -87,9 +94,6 @@
             }
 
             // Testing the addMarker function
-            user1 = new google.maps.LatLng(45.50273699999999, -73.57288749999998);
-            user2 = new google.maps.LatLng(45.5067671, -73.56373980000001);
-            user3 = new google.maps.LatLng(45.5148865, -73.5597267);
 
             addMarker(midpoint[0],midpoint[1]);
             addMarker(user1);
