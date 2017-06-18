@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <title>Hello World!</title>
     <style>
-
       /* Always set the map height explicitly to define the size of the div
        * element that contains the map. */
       #map {
@@ -20,9 +19,7 @@
     </style>
   </head>
   <body>
-    <h1>Hello World!</h1>
-
-    <ul id="messages"></ul>
+    <h1>Meet in the Middle!</h1>
 
     <div id="actions">
       <button id="sendLocation" type="button">Send my location.</button>
@@ -30,14 +27,11 @@
     </div>
 
     <div id="map"></div>
-
-
+    
   </body>
   
-
   <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
   <script src="/socket.io/socket.io.js"></script>
-
   <script type="text/javascript">
       // This example requires the Places library. Include the libraries=places
       // parameter when you first load the API. For example:
@@ -95,15 +89,10 @@
     $(function() {
       // Initialize Variables
       const socket = io();
-      const $messages = $('#messages');
       const $sendLocation = $('#sendLocation');
       const $middleMe = $('#middleMe');
 
       // Socket.io listeners
-      socket.on('new message', (msg) => {
-        displayMessage(msg);
-      });
-
       socket.on('close', () => {
         displayMessage('Lost connection to device.');
       }); 
