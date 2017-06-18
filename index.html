@@ -76,18 +76,15 @@
           });
         }
 
-        var marker0 = createMarker({
-            position: new google.maps.LatLng(midpoint),
-            map: map,
-            icon: "http://1.bp.blogspot.com/_GZzKwf6g1o8/S6xwK6CSghI/AAAAAAAAA98/_iA3r4Ehclk/s1600/marker-green.png"
-        });
-
 
   </script>
+
   <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB-09W17tZ08f4mfSG4LWaqSFvuqK8MgNY&libraries=places&callback=initMap" async defer/>
+  
   <script type="text/javascript">
     $(function() {
       // Initialize Variables
+
       const socket = io();
       const $sendLocation = $('#sendLocation');
       const $middleMe = $('#middleMe');
@@ -124,7 +121,6 @@
       function showPosition(position) {
         socket.send({latitude: position.coords.latitude, 
           longitude: position.coords.longitude});
-
       }
 
       function displayMessage(msg) {
@@ -133,4 +129,5 @@
     });
 
   </script>
+
 </html>

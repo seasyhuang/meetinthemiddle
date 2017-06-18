@@ -35,6 +35,8 @@ http.listen(port, () => {
 *
 =========================================== */
 
+var spawn = require('child_process').spawn,
+    py    = spawn('python', ['compute_center.py']);
 var locations = [], i = 0;
 
 io.on('connection', (socket) => {
@@ -52,11 +54,27 @@ io.on('connection', (socket) => {
     }
   });
 
+  function sendClient(coordinates) {
+    socket.emit('middle-found', coordinates);
+  }
+
   function middleMe() {
     console.log(locations);
     var center = geo.getCenter(locations);
     console.log('The center: ', center);
-    // send to python script
+    
+    // // send to python script
+    // py.stdout.on('data', function(data) {
+    //   dataString += data.toString();
+    // });
+
+    // py.stdout.on('end', function() {
+    //   console.log('Sum of numbers=',dataString);
+    //   sendClient(dataString);
+    // });
+
+    // py.stdin.write(JSON.stringify(center));
+    // py.stdin.end();
   }
 
 });
