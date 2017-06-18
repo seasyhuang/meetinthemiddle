@@ -17,96 +17,83 @@
         padding: 0;
       }
     </style>
+
+
+  <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+  <script src="/socket.io/socket.io.js"></script>
+
+
   </head>
   <body>
     <h1>Meet in the Middle!</h1>
-
     <div id="actions">
       <button id="sendLocation" type="button">Send my location.</button>
       <button id="middleMe" type="button">Middle me</button>
     </div>
-
     <div id="map"></div>
-    
   </body>
-  
-  <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
-  <script src="/socket.io/socket.io.js"></script>
+
   <script type="text/javascript">
-      // This example requires the Places library. Include the libraries=places
-      // parameter when you first load the API. For example:
-      // <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB-09W17tZ08f4mfSG4LWaqSFvuqK8MgNY&libraries=places">
-        var map;
-        var infowindow;
-                  var midpoint = {lat: 45.501689, lng: -73.567256};
+    var map;
+    var infowindow;
+    var midpoint = {lat: 45.501689, lng: -73.567256};
 
-
-        function initMap() {
+    function initMap() {
 //          var midpoint = {lat: 45.501689, lng: -73.567256};
 
-          map = new google.maps.Map(document.getElementById('map'), {
-            center: midpoint ,
-            zoom: 15
-          });
+      map = new google.maps.Map(document.getElementById('map'), {
+        center: midpoint ,
+        zoom: 15
+      });
 
-          infowindow = new google.maps.InfoWindow();
-          var service = new google.maps.places.PlacesService(map);
-          service.nearbySearch({
-            location: midpoint,
-            radius: 500
-          }, callback);
+      infowindow = new google.maps.InfoWindow();
+      var service = new google.maps.places.PlacesService(map);
+      service.nearbySearch({
+        location: midpoint,
+        radius: 500
+      }, callback);
+    }
+
+    function callback(results, status) {
+      if (status === google.maps.places.PlacesServiceStatus.OK) {
+        for (var i = 0; i < results.length; i++) {
+          createMarker(results[i]);
         }
+      }
+    }
 
-        function callback(results, status) {
-          if (status === google.maps.places.PlacesServiceStatus.OK) {
-            for (var i = 0; i < results.length; i++) {
-              createMarker(results[i]);
-            }
-          }
-        }
+    function createMarker(place) {
+      var placeLoc = place.geometry.location;
+      var marker = new google.maps.Marker({
+        map: map,
+        position: place.geometry.location
+      });
 
-        function createMarker(place) {
-          var placeLoc = place.geometry.location;
-          var marker = new google.maps.Marker({
-            map: map,
-            position: place.geometry.location
-          });
+      google.maps.event.addListener(marker, 'click', function() {
+        infowindow.setContent(place.name);
+        infowindow.open(map, this);
+      });
+    }
 
-          google.maps.event.addListener(marker, 'click', function() {
-            infowindow.setContent(place.name);
-            infowindow.open(map, this);
-          });
-        }
+    function addMarker(location) {
+      marker = new google.maps.Marker({
+        position: location,
+        map: map,
+        icon: "http://1.bp.blogspot.com/_GZzKwf6g1o8/S6xwK6CSghI/AAAAAAAAA98/_iA3r4Ehclk/s1600/marker-green.png"
+      });
+    }
+    // Testing the addMarker function
+    // user1 = new google.maps.LatLng(45.50273699999999, -73.57288749999998);
+    // user2 = new google.maps.LatLng(45.5067671, -73.56373980000001);
+    // user3 = new google.maps.LatLng(45.5148865, -73.5597267);
 
-        function addMarker(location) {
-          marker = new google.maps.Marker({
-          position: location,
-          map: map,
-          icon: "http://1.bp.blogspot.com/_GZzKwf6g1o8/S6xwK6CSghI/AAAAAAAAA98/_iA3r4Ehclk/s1600/marker-green.png"
+    // addMarker(midpoint[0],midpoint[1]);
+    // addMarker(user1);
+    // addMarker(user2);
+    // addMarker(user3);
+     $(function() {
 
-          });
-        }
-
-        // Testing the addMarker function
-        user1 = new google.maps.LatLng(45.50273699999999, -73.57288749999998);
-        user2 = new google.maps.LatLng(45.5067671, -73.56373980000001);
-        user3 = new google.maps.LatLng(45.5148865, -73.5597267);
-
-        addMarker(midpoint[0],midpoint[1]);
-        addMarker(user1);
-        addMarker(user2);
-        addMarker(user3);
-
-
-
-  </script>
-
-  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB-09W17tZ08f4mfSG4LWaqSFvuqK8MgNY&libraries=places&callback=initMap" async defer/>
-  
-  <script type="text/javascript">
-    $(function() {
       // Initialize Variables
-
       const socket = io();
       const $sendLocation = $('#sendLocation');
       const $middleMe = $('#middleMe');
@@ -115,6 +102,10 @@
       socket.on('close', () => {
         displayMessage('Lost connection to device.');
       }); 
+
+      socket.on('middle-me', (coordinates) => {
+        addMarker(coordinates);
+      });
 
       // Browser Event Listeners
       $sendLocation.click(() => {
@@ -125,9 +116,6 @@
         sendData();
       });
 
-      // Functions
-      var x = document.getElementById("actions");
-
       function sendData(data) {
         socket.send('middle-me');
       }
@@ -135,8 +123,6 @@
       function getLocation() {
         if (navigator.geolocation) {
           navigator.geolocation.getCurrentPosition(showPosition);
-        } else {
-          x.innerHTML = "Geolocation is not supported by this browser.";
         }
       }
 
@@ -148,8 +134,14 @@
       function displayMessage(msg) {
         $messages.append($('<li>').text(msg));
       }
-    });
 
+     });
   </script>
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB-09W17tZ08f4mfSG4LWaqSFvuqK8MgNY&libraries=places&callback=initMap"/>
+  <!-- do not remove !!! -->
+  <script type="text/javascript"></script> 
+
+
+
 
 </html>
