@@ -3,6 +3,7 @@
   <head>
     <meta charset="UTF-8">
     <title>Hello World!</title>
+  <link rel="stylesheet" type="text/css" href="./map.css">
   </head>
   <body>
     <h1>Hello World!</h1>
@@ -13,6 +14,11 @@
       <button id="sendLocation" type="button">Send my location.</button>
       <button id="middleMe" type="button">Middle me</button>
     </div>
+
+    <div id="map"></div>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB-09W17tZ08f4mfSG4LWaqSFvuqK8MgNY&libraries=places&callback=initMap" async defer></>
+
+
 
   </body>
 
@@ -69,6 +75,62 @@
       function displayMessage(msg) {
         $messages.append($('<li>').text(msg));
       }
+      //this is the map stuff
+
+
+       // This example requires the Places library. Include the libraries=places
+// parameter when you first load the API. For example:
+// <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB-09W17tZ08f4mfSG4LWaqSFvuqK8MgNY&libraries=places">
+
+var map;
+var infowindow;
+
+function initMap() {
+  var montreal = {lat: 45.501689, lng: -73.567256};
+
+  map = new google.maps.Map(document.getElementById('map'), {
+    center: montreal ,
+    zoom: 15
+  });
+
+
+
+
+  infowindow = new google.maps.InfoWindow();
+  var service = new google.maps.places.PlacesService(map);
+  service.nearbySearch({
+    location: montreal,
+    radius: 500,
+    type: ['food']
+  }, callback);
+}
+
+function callback(results, status) {
+  if (status === google.maps.places.PlacesServiceStatus.OK) {
+    for (var i = 0; i < results.length; i++) {
+      		createMarker(results[i]);
+    }
+  }
+}
+
+function createMarker(place) {
+  var placeLoc = place.geometry.location;
+  var marker = new google.maps.Marker({
+    map: map,
+    position: place.geometry.location
+  });
+
+
+
+  google.maps.event.addListener(marker, 'click', function() {
+    infowindow.setContent(place.name);
+    infowindow.open(map, this);
+  });
+}
+
+//////////
+
     });
+
   </script>
 </html>
