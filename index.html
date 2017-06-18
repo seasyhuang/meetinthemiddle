@@ -38,9 +38,16 @@
       // <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB-09W17tZ08f4mfSG4LWaqSFvuqK8MgNY&libraries=places">
         var map;
         var infowindow;
+        var midpoint = {lat: 45.501689, lng: -73.567256};
+        var typePlace = "cafe";
+        var user1 = new google.maps.LatLng(45.50273699999999, -73.57288749999998);
+        var user2 = new google.maps.LatLng(45.5067671, -73.56373980000001);
+        var user3 = new google.maps.LatLng(45.5148865, -73.5597267);
+
+
 
         function initMap() {
-          var midpoint = {lat: 45.501689, lng: -73.567256};
+//          var midpoint = {lat: 45.501689, lng: -73.567256};
 
           map = new google.maps.Map(document.getElementById('map'), {
             center: midpoint ,
@@ -52,6 +59,8 @@
           service.nearbySearch({
             location: midpoint,
             radius: 500
+            type: [typePlace]
+
           }, callback);
         }
 
@@ -76,18 +85,33 @@
           });
         }
 
-        var marker0 = createMarker({
-            position: new google.maps.LatLng(midpoint),
-            map: map,
-            icon: "http://1.bp.blogspot.com/_GZzKwf6g1o8/S6xwK6CSghI/AAAAAAAAA98/_iA3r4Ehclk/s1600/marker-green.png"
-        });
+        function addMarker(location) {
+          marker = new google.maps.Marker({
+          position: location,
+          map: map,
+          icon: "http://1.bp.blogspot.com/_GZzKwf6g1o8/S6xwK6CSghI/AAAAAAAAA98/_iA3r4Ehclk/s1600/marker-green.png"
+
+          });
+        }
+
+
+
+
+        addMarker(midpoint[0],midpoint[1]);
+        addMarker(user1);
+        addMarker(user2);
+        addMarker(user3);
+
 
 
   </script>
+
   <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB-09W17tZ08f4mfSG4LWaqSFvuqK8MgNY&libraries=places&callback=initMap" async defer/>
+  
   <script type="text/javascript">
     $(function() {
       // Initialize Variables
+
       const socket = io();
       const $sendLocation = $('#sendLocation');
       const $middleMe = $('#middleMe');
@@ -124,7 +148,6 @@
       function showPosition(position) {
         socket.send({latitude: position.coords.latitude, 
           longitude: position.coords.longitude});
-
       }
 
       function displayMessage(msg) {
@@ -133,4 +156,5 @@
     });
 
   </script>
+
 </html>
